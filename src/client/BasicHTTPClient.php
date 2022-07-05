@@ -222,7 +222,7 @@ class BasicHTTPClient implements HTTPClient
         if ($exception != null) {
 
             // Log the error into file
-            error_log($exception->__toString());
+            // error_log($exception->__toString());
 
             // Log the error to console
             $this->log($exception->__toString());
