@@ -2,54 +2,106 @@
 
 declare(strict_types=1);
 
-namespace Amadeus\Exceptions;
+namespace Amadeus;
 
-use Amadeus\Client\Response;
-use Exception;
+use Amadeus\Client\HTTPClient;
 
-class ResponseException extends Exception
+class AmadeusBuilder
 {
-    private ?string $url = null;
+    private Configuration $configuration;
 
     /**
-     * @param Response|null $response
+     * @param Configuration $configuration
      */
-    public function __construct(?Response $response)
+    public function __construct(Configuration $configuration)
     {
-        if ($response != null) {
-            if ($response->getUrl() != null) {
-                $this->url = $response->getUrl();
-            }
-
-            if ($response->getResult() != null) {
-                if ($response->getStatusCode() != null) {
-                    parent::__construct($response->getResult(), $response->getStatusCode());
-                } else {
-                    parent::__construct($response->getResult());
-                }
-            } else {
-                if ($response->getStatusCode() != null) {
-                    parent::__construct("", $response->getStatusCode());
-                } else {
-                    parent::__construct();
-                }
-            }
-        }
+        $this->configuration = $configuration;
     }
 
     /**
-     * @return string|null
+     * Set the optional custom host domain to use for API calls.
+     * Defaults to "test.api.amadeus.com" for a test environment,
+     * and "api.amadeus.com" for a production environment.
+     * @param string $host
+     * @return $this
      */
-    public function getUrl(): ?string
+    public function setHost(string $host): AmadeusBuilder
     {
-        return $this->url;
+        $this->configuration->setHost($host);
+        return $this;
     }
 
-    public function __toString(): string
+    /**
+     * Whether to use SSL. Defaults to true
+     * @param bool $ssl
+     * @return AmadeusBuilder
+     */
+    public function setSsl(bool $ssl): AmadeusBuilder
     {
-        return get_class($this) .": [$this->code]" ."\n"
-            ."Message: ".$this->message ."\n"
-            ."Url: ".$this->getUrl() ."\n"
-            ."Trace: ".$this->getTraceAsString()."\n";
+        $this->configuration->setSsl($ssl);
+        return $this;
+    }
+
+    /**
+     * Set the port to use. Defaults to 443 for an SSL connection, and 80 for a non SSL connection.
+     * @param int $port
+     * @return AmadeusBuilder
+     */
+    public function setPort(int $port): AmadeusBuilder
+    {
+        $this->configuration->setPort($port);
+        return $this;
+    }
+
+    /**
+     * Set the http client to use. Defaults to BasicHTTPClient.
+     * @param HTTPClient $httpClient
+     * @return AmadeusBuilder
+     */
+    public function setHttpClient(HTTPClient $httpClient): AmadeusBuilder
+    {
+        $this->configuration->setHttpClient($httpClient);
+        return $this;
+    }
+
+    /**
+     * Set to production environment.
+     * @return AmadeusBuilder
+     */
+    public function setProductionEnvironment(): AmadeusBuilder
+    {
+        $this->configuration->setProductionEnvironment();
+        return $this;
+    }
+
+    /**
+     * Set the maximum number of seconds to allow cURL functions to execute.
+     * @param int $timeout
+     * @return $this
+     */
+    public function setTimeout(int $timeout): AmadeusBuilder
+    {
+        $this->configuration->setTimeout($timeout);
+        return $this;
+    }
+
+    /**
+     * Set the log level for debugging.
+     * @param string|null $logLevel
+     * @return $this
+     */
+    public function setLogLevel(?string $logLevel): AmadeusBuilder
+    {
+        $this->configuration->setLogLevel($logLevel);
+        return $this;
+    }
+
+    /**
+     * Return a Amadeus object.
+     * @return Amadeus
+     */
+    public function build(): Amadeus
+    {
+        return new Amadeus($this->configuration);
     }
 }
