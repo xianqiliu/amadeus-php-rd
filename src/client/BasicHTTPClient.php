@@ -285,7 +285,7 @@ class BasicHTTPClient implements HTTPClient
     {
         $message = '['.date("F j, Y, g:i a").']'."\n"
             .$message."\n";
-        if($this->configuration->getLogLevel() == "debug") {
+        if ($this->configuration->getLogLevel() == "debug") {
             file_put_contents(
                 'php://stdout',
                 $message
