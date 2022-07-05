@@ -29,11 +29,10 @@ final class ExceptionsTest extends TestCase
         $error = new ResponseException(null);
         $error = explode("\n", $error->__toString());
         $this->assertEquals(
-            '['.date("F j, Y, g:i a").']'."\n"
-            ."Amadeus\Exceptions\ResponseException: [0]"."\n"
+            "Amadeus\Exceptions\ResponseException: [0]"."\n"
             ."Message: "."\n"
             ."Url: "."\n",
-            join("\n", array_slice($error, 0, 4))."\n"
+            join("\n", array_slice($error, 0, 3))."\n"
         );
     }
 
@@ -48,11 +47,10 @@ final class ExceptionsTest extends TestCase
         $error = new ResponseException($response);
         $error = explode("\n", $error->__toString());
         $this->assertEquals(
-            '['.date("F j, Y, g:i a").']'."\n"
-            ."Amadeus\Exceptions\ResponseException: [0]"."\n"
+            "Amadeus\Exceptions\ResponseException: [0]"."\n"
             ."Message: message"."\n"
             ."Url: "."\n",
-            join("\n", array_slice($error, 0, 4))."\n"
+            join("\n", array_slice($error, 0, 3))."\n"
         );
     }
 
@@ -69,11 +67,10 @@ final class ExceptionsTest extends TestCase
         $error = new ResponseException($response);
         $error = explode("\n", $error->__toString());
         $this->assertEquals(
-            '['.date("F j, Y, g:i a").']'."\n"
-            ."Amadeus\Exceptions\ResponseException: [400]"."\n"
+            "Amadeus\Exceptions\ResponseException: [400]"."\n"
             ."Message: "."\n"
             ."Url: "."\n",
-            join("\n", array_slice($error, 0, 4))."\n"
+            join("\n", array_slice($error, 0, 3))."\n"
         );
     }
 
@@ -90,11 +87,10 @@ final class ExceptionsTest extends TestCase
         $error = new ResponseException($response);
         $error = explode("\n", $error->__toString());
         $this->assertEquals(
-            '['.date("F j, Y, g:i a").']'."\n"
-            ."Amadeus\Exceptions\ResponseException: [200]"."\n"
+            "Amadeus\Exceptions\ResponseException: [200]"."\n"
             ."Message: message"."\n"
             ."Url: "."\n",
-            join("\n", array_slice($error, 0, 4))."\n"
+            join("\n", array_slice($error, 0, 3))."\n"
         );
     }
 
