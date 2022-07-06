@@ -183,7 +183,7 @@ class BasicHTTPClient implements HTTPClient
         curl_close($curlHandle);
 
         $response = new Response($request, $info, $result);
-        $this->log("Response: "."\n". substr($response->__toString(),0, 1000));
+        $this->log("Response: "."\n". substr($response->__toString(), 0, 1000));
         $this->detectError($response);
 
         return $response;

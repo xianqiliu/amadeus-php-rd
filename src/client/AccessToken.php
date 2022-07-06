@@ -49,7 +49,6 @@ class AccessToken
                 $this->log(
                     "Access token expired ! Automatically update access token -> [". $this->access_token ."] !"
                 );
-
             } else {
                 // Else still return the current token
 
