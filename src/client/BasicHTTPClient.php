@@ -171,7 +171,7 @@ class BasicHTTPClient implements HTTPClient
      */
     public function execute(Request $request): Response
     {
-        $this->log("INFO: Request"."\n".$request->__toString());
+        $this->log("Request: "."\n".$request->__toString());
 
         $curlHandle = curl_init();
         $this->setCurlOptions($curlHandle, $request);
@@ -183,7 +183,7 @@ class BasicHTTPClient implements HTTPClient
         curl_close($curlHandle);
 
         $response = new Response($request, $info, $result);
-        $this->log("INFO: Response "."\n".$response->__toString());
+        $this->log("Response: "."\n". substr($response->__toString(),0, 1000));
         $this->detectError($response);
 
         return $response;
@@ -220,14 +220,6 @@ class BasicHTTPClient implements HTTPClient
         }
 
         if ($exception != null) {
-
-            // Log the error into file
-            // error_log($exception->__toString());
-
-            // Log the error to console
-            $this->log($exception->__toString());
-
-            // throw the exception
             throw $exception;
         }
     }
@@ -283,12 +275,12 @@ class BasicHTTPClient implements HTTPClient
      */
     private function log(string $message): void
     {
-        $message = '['.date("F j, Y, g:i a").']'."\n"
-            .$message."\n";
+        $message = '[-- Amadeus PHP SDK log message: ' .date("F j, Y, g:i a"). ' --]'."\n"
+            .$message;
         if ($this->configuration->getLogLevel() == "debug") {
             file_put_contents(
                 'php://stdout',
-                $message
+                $message."\n"
             );
         }
     }

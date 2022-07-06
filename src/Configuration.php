@@ -47,9 +47,9 @@ class Configuration
     private int $timeout = 20;
 
     /**
-     * The log level. Defaults to null.
+     * The log level. Defaults to 'off'.
      */
-    private ?string $logLevel = null;
+    private string $logLevel = "off";
 
     /**
      * @param string $clientId
@@ -184,9 +184,9 @@ class Configuration
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getLogLevel(): ?string
+    public function getLogLevel(): string
     {
         return $this->logLevel;
     }
@@ -194,10 +194,12 @@ class Configuration
     /**
      * Set the log level for debugging.
      * eg. setLogLevel("debug");
-     * @param string|null $logLevel
+     * @param string $logLevel
+     * @return Configuration
      */
-    public function setLogLevel(?string $logLevel): void
+    public function setLogLevel(string $logLevel): Configuration
     {
         $this->logLevel = $logLevel;
+        return $this;
     }
 }
