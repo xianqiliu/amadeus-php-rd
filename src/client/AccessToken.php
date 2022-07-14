@@ -46,13 +46,13 @@ class AccessToken
                 // If expired then refresh the token
                 $this->storeAccessToken($this->fetchAccessToken());
 
-                $this->log(
+                $this->logTokenStatus(
                     "Access token expired ! Automatically update access token -> [". $this->access_token ."] !"
                 );
             } else {
                 // Else still return the current token
 
-                $this->log(
+                $this->logTokenStatus(
                     "Current access token -> [". $this->access_token ."] is still available !"
                 );
             }
@@ -60,7 +60,7 @@ class AccessToken
             // First time to fetch access token
             $this->storeAccessToken($this->fetchAccessToken());
 
-            $this->log(
+            $this->logTokenStatus(
                 "First time to fetch access token -> [". $this->access_token ."] !"
             );
         }
@@ -155,11 +155,11 @@ class AccessToken
     }
 
     /**
-     * A simple log only triggered if in debug mode
+     * A simple log for access token only triggered if in debug mode
      * @param string $message
      * @return void
      */
-    private function log(string $message): void
+    private function logTokenStatus(string $message): void
     {
         if ($this->client->getConfiguration()->getLogLevel() == "debug") {
             file_put_contents(

@@ -220,6 +220,7 @@ class BasicHTTPClient implements HTTPClient
         }
 
         if ($exception != null) {
+            $this->log("Exception: "."\n".$exception->__toString());
             throw $exception;
         }
     }
